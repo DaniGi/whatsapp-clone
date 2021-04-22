@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
-import { Tab, Nav, Button, Modal } from 'react-bootstrap'
-import Conversations from './Conversations'
-import Contacts from './Contacts'
-import NewContactModal from './NewContactModal'
-import NewConversationModal from './NewConversationModal'
+import React, { useState } from 'react';
+import { Tab, Nav, Button, Modal } from 'react-bootstrap';
+import Conversations from './Conversations';
+import Contacts from './Contacts';
+import NewContactModal from './NewContactModal';
+import NewConversationModal from './NewConversationModal';
 
-const CONVERSATIONS_KEY = 'conversations'
-const CONTACTS_KEY = 'contacts'
+const CONVERSATIONS_KEY = 'conversations';
+const CONTACTS_KEY = 'contacts';
 
 export default function Sidebar({ id }) {
-  const [activeKey, setActiveKey] = useState(CONVERSATIONS_KEY)
-  const [modalOpen, setModalOpen] = useState(false)
-  const conversationsOpen = activeKey === CONVERSATIONS_KEY
-  
+  const [activeKey, setActiveKey] = useState(CONVERSATIONS_KEY);
+  const [modalOpen, setModalOpen] = useState(false);
+  const conversationsOpen = activeKey === CONVERSATIONS_KEY;
+
   function closeModal() {
-    setModalOpen(false)
+    setModalOpen(false);
   }
 
   return (
@@ -45,11 +45,12 @@ export default function Sidebar({ id }) {
       </Tab.Container>
 
       <Modal show={modalOpen} onHide={closeModal}>
-        {conversationsOpen ?
-          <NewConversationModal closeModal={closeModal} /> :
+        {conversationsOpen ? (
+          <NewConversationModal closeModal={closeModal} />
+        ) : (
           <NewContactModal closeModal={closeModal} />
-        }
+        )}
       </Modal>
     </div>
-  )
+  );
 }

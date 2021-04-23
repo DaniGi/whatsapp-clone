@@ -1,8 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback, FC } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { useConversations } from '../contexts/ConversationsProvider';
 
-export default function OpenConversation() {
+interface Recipient {
+  id: string;
+  name: string;
+}
+
+const OpenConversation: FC = () => {
   const [text, setText] = useState('');
   const setRef = useCallback((node) => {
     if (node) {
@@ -11,21 +16,21 @@ export default function OpenConversation() {
   }, []);
   const { sendMessage, selectedConversation } = useConversations();
 
-  function handleSubmit(e) {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     sendMessage(
-      selectedConversation.recipients.map((r) => r.id),
+      selectedConversation.recipients.map((r: Recipient) => r.id),
       text,
     );
     setText('');
-  }
+  };
 
   return (
     <div className="d-flex flex-column flex-grow-1">
       <div className="flex-grow-1 overflow-auto">
         <div className="d-flex flex-column align-items-start justify-content-end px-3">
-          {selectedConversation.messages.map((message, index) => {
+          {selectedConversation.messages.map((message: any, index: number) => {
             const lastMessage = selectedConversation.messages.length - 1 === index;
             return (
               <div
@@ -58,7 +63,7 @@ export default function OpenConversation() {
               as="textarea"
               required
               value={text}
-              onChange={(e) => setText(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value)}
               style={{ height: '75px', resize: 'none' }}
             />
             <InputGroup.Append>
@@ -69,4 +74,6 @@ export default function OpenConversation() {
       </Form>
     </div>
   );
-}
+};
+
+export default OpenConversation;

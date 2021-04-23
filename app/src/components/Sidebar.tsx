@@ -1,25 +1,30 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 import { Tab, Nav, Button, Modal } from 'react-bootstrap';
 import Conversations from './Conversations';
 import Contacts from './Contacts';
 import NewContactModal from './NewContactModal';
 import NewConversationModal from './NewConversationModal';
 
+interface Props {
+  id: string;
+}
+
 const CONVERSATIONS_KEY = 'conversations';
 const CONTACTS_KEY = 'contacts';
 
-export default function Sidebar({ id }) {
-  const [activeKey, setActiveKey] = useState(CONVERSATIONS_KEY);
+const Sidebar: FC<Props> = ({ id }) => {
+  const [activeKey, setActiveKey] = useState<string | null>(CONVERSATIONS_KEY);
   const [modalOpen, setModalOpen] = useState(false);
   const conversationsOpen = activeKey === CONVERSATIONS_KEY;
 
-  function closeModal() {
+  function closeModal(): any {
     setModalOpen(false);
   }
 
   return (
     <div style={{ width: '250px' }} className="d-flex flex-column">
-      <Tab.Container activeKey={activeKey} onSelect={setActiveKey}>
+      {/* @ts-ignore */}
+      <Tab.Container activeKey={activeKey} onSelect={(eventKey) => setActiveKey(eventKey)}>
         <Nav variant="tabs" className="justify-content-center">
           <Nav.Item>
             <Nav.Link eventKey={CONVERSATIONS_KEY}>Conversations</Nav.Link>
@@ -53,4 +58,6 @@ export default function Sidebar({ id }) {
       </Modal>
     </div>
   );
-}
+};
+
+export default Sidebar;

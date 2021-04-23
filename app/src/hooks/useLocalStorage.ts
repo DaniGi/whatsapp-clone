@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
 type Keys = 'contacts' | 'conversations' | 'id';
-type InitialValue = [] | (() => {});
+type InitialValue = [] | (() => {}) | undefined;
 
 type UseLocalStorageFunc = <T>(
   key: Keys,
   initialValue: InitialValue,
-) => [T[], React.Dispatch<React.SetStateAction<T[]>>];
+) => [T, React.Dispatch<React.SetStateAction<T>>];
 
 const PREFIX = 'whatsapp-clone-';
 

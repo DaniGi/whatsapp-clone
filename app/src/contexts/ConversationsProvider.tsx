@@ -53,7 +53,7 @@ export function useConversations() {
 }
 
 export const ConversationsProvider: React.FC<Props> = ({ id, children }) => {
-  const [conversations, setConversations] = useLocalStorage<Conversation>('conversations', []);
+  const [conversations, setConversations] = useLocalStorage<Conversation[]>('conversations', []);
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const { contacts } = useContacts();
   const socket = useSocket();

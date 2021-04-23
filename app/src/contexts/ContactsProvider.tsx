@@ -23,7 +23,7 @@ export function useContacts() {
 }
 
 export const ContactsProvider: React.FC = ({ children }) => {
-  const [contacts, setContacts] = useLocalStorage<Contact>('contacts', []);
+  const [contacts, setContacts] = useLocalStorage<Contact[]>('contacts', []);
 
   function createContact(contact: Contact) {
     const { id, name } = contact;

@@ -1,8 +1,13 @@
+import { FC } from 'react';
 import Sidebar from './Sidebar';
 import OpenConversation from './OpenConversation';
 import { useConversations } from '../contexts/ConversationsProvider';
 
-export default function Dashboard({ id }) {
+interface Props {
+  id: string;
+}
+
+const Dashboard: FC<Props> = ({ id }) => {
   const { selectedConversation } = useConversations();
 
   return (
@@ -11,4 +16,6 @@ export default function Dashboard({ id }) {
       {selectedConversation && <OpenConversation />}
     </div>
   );
-}
+};
+
+export default Dashboard;

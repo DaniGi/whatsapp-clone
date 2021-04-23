@@ -1,15 +1,20 @@
-import React, { useRef } from 'react';
+import { useRef, FC } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import { v4 as uuidV4 } from 'uuid';
 
-export default function Login({ onIdSubmit }) {
-  const idRef = useRef();
+interface Props {
+  onIdSubmit: (func: any) => {};
+}
 
-  function handleSubmit(e) {
+const Login: FC<Props> = ({ onIdSubmit }) => {
+  const idRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     e.preventDefault();
-
-    onIdSubmit(idRef.current.value);
-  }
+    if (idRef.current) {
+      onIdSubmit(idRef.current.value);
+    }
+  };
 
   function createNewId() {
     onIdSubmit(uuidV4());
@@ -31,4 +36,6 @@ export default function Login({ onIdSubmit }) {
       </Form>
     </Container>
   );
-}
+};
+
+export default Login;

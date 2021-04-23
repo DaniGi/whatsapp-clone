@@ -3,7 +3,7 @@ import { Container, Form, Button } from 'react-bootstrap';
 import { v4 as uuidV4 } from 'uuid';
 
 interface Props {
-  onIdSubmit: (func: any) => {};
+  onIdSubmit: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Login: FC<Props> = ({ onIdSubmit }) => {

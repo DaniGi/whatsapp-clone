@@ -9,7 +9,7 @@ interface Props {
 const Login: FC<Props> = ({ onIdSubmit }) => {
   const idRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (idRef.current) {
       onIdSubmit(idRef.current.value);

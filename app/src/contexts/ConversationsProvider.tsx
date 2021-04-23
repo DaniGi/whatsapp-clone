@@ -97,11 +97,13 @@ export const ConversationsProvider: React.FC<Props> = ({ id, children }) => {
     socket.on('receive-message', addMessageToConversation);
 
     // eslint-disable-next-line consistent-return
-    return () => socket.off('receive-message');
+    return () => {
+      socket.off('receive-message');
+    };
   }, [socket, addMessageToConversation]);
 
   function sendMessage(recipients: string[], text: string) {
-    socket.emit('send-message', { recipients, text });
+    if (socket) socket.emit('send-message', { recipients, text });
 
     addMessageToConversation({ recipients, text, sender: id });
   }

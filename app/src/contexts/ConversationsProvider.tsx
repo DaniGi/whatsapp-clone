@@ -1,21 +1,64 @@
-import React, { useContext, useState, useEffect, useCallback } from 'react';
+import * as React from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import { useContacts } from './ContactsProvider';
 import { useSocket } from './SocketProvider';
 
-const ConversationsContext = React.createContext();
+const { useContext, useState, useEffect, useCallback } = React;
+
+interface Props {
+  id: string;
+}
+
+interface Message {
+  sender: string;
+  text: string;
+}
+interface Conversation {
+  messages: Message[];
+  recipients: string[];
+}
+
+type FormattedMessage = Message & {
+  senderName: string;
+  fromMe: boolean;
+};
+
+interface FormattedConversationInterface {
+  messages: FormattedMessage[];
+  recipients: {
+    id: string;
+    name: string;
+  }[];
+  selected: boolean;
+}
+
+interface ConversationsContextInterface {
+  conversations: FormattedConversationInterface[];
+  selectedConversation: FormattedConversationInterface;
+  sendMessage: (recipients: string[], text: string) => void;
+  selectConversationIndex: React.Dispatch<React.SetStateAction<number>>;
+  createConversation: (recipients: string[]) => void;
+}
+
+const ConversationsContext = React.createContext<ConversationsContextInterface>({
+  conversations: [],
+  selectedConversation: { messages: [], recipients: [], selected: false },
+  sendMessage: () => {},
+  selectConversationIndex: () => {},
+  createConversation: () => {},
+});
 
 export function useConversations() {
   return useContext(ConversationsContext);
 }
 
-export function ConversationsProvider({ id, children }) {
-  const [conversations, setConversations] = useLocalStorage('conversations', []);
+export const ConversationsProvider: React.FC<Props> = ({ id, children }) => {
+  const [conversations, setConversations] = useLocalStorage<Conversation>('conversations', []);
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
   const { contacts } = useContacts();
   const socket = useSocket();
 
-  function createConversation(recipients) {
+  function createConversation(recipients: string[]) {
     setConversations((prevConversations) => {
       return [...prevConversations, { recipients, messages: [] }];
     });
@@ -57,7 +100,7 @@ export function ConversationsProvider({ id, children }) {
     return () => socket.off('receive-message');
   }, [socket, addMessageToConversation]);
 
-  function sendMessage(recipients, text) {
+  function sendMessage(recipients: string[], text: string) {
     socket.emit('send-message', { recipients, text });
 
     addMessageToConversation({ recipients, text, sender: id });
@@ -96,9 +139,9 @@ export function ConversationsProvider({ id, children }) {
   };
 
   return <ConversationsContext.Provider value={value}>{children}</ConversationsContext.Provider>;
-}
+};
 
-function arrayEquality(a, b) {
+function arrayEquality(a: string[], b: string[]) {
   if (a.length !== b.length) return false;
 
   a.sort();

@@ -1,8 +1,16 @@
 import { useEffect, useState } from 'react';
 
+type Keys = 'contacts' | 'conversations' | 'id';
+type InitialValue = [] | (() => {});
+
+type UseLocalStorageFunc = <T>(
+  key: Keys,
+  initialValue: InitialValue,
+) => [T[], React.Dispatch<React.SetStateAction<T[]>>];
+
 const PREFIX = 'whatsapp-clone-';
 
-export default function useLocalStorage(key, initialValue) {
+const useLocalStorage: UseLocalStorageFunc = (key, initialValue) => {
   const prefixedKey = PREFIX + key;
   const [value, setValue] = useState(() => {
     const jsonValue = localStorage.getItem(prefixedKey);
@@ -18,4 +26,6 @@ export default function useLocalStorage(key, initialValue) {
   }, [prefixedKey, value]);
 
   return [value, setValue];
-}
+};
+
+export default useLocalStorage;

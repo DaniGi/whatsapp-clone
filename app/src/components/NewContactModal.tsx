@@ -14,7 +14,7 @@ const NewContactModal: FC<Props> = ({ closeModal }) => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (idRef.current && nameRef.current) {
-      createContact(idRef.current.value, nameRef.current.value);
+      createContact({ id: idRef.current.value, name: nameRef.current.value });
     }
     closeModal();
   };

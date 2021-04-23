@@ -1,18 +1,23 @@
-import React, { useRef } from 'react';
+import { useRef, FC } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useContacts } from '../contexts/ContactsProvider';
 
-export default function NewContactModal({ closeModal }) {
-  const idRef = useRef();
-  const nameRef = useRef();
+interface Props {
+  closeModal: () => {};
+}
+
+const NewContactModal: FC<Props> = ({ closeModal }) => {
+  const idRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
   const { createContact } = useContacts();
 
-  function handleSubmit(e) {
+  const handleSubmit: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     e.preventDefault();
-
-    createContact(idRef.current.value, nameRef.current.value);
+    if (idRef.current && nameRef.current) {
+      createContact(idRef.current.value, nameRef.current.value);
+    }
     closeModal();
-  }
+  };
 
   return (
     <>
@@ -32,4 +37,6 @@ export default function NewContactModal({ closeModal }) {
       </Modal.Body>
     </>
   );
-}
+};
+
+export default NewContactModal;

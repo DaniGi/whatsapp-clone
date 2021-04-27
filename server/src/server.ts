@@ -1,13 +1,17 @@
-import express, { Request, Response } from 'express'
+import express, { Request, Response } from 'express';
 import ioserver, { Socket } from 'socket.io';
 
-const PORT = 5000
+const PORT = 5000;
 
 const app = express();
 const server = require('http').Server(app);
+
 const io = ioserver(server);
 
-interface SendMsgObject {recipients: string[], text: string}
+interface SendMsgObject {
+  recipients: string[];
+  text: string;
+}
 
 app.get('/', (req: Request, res: Response) => {
   res.json({ data: 'hello world' });

@@ -1,10 +1,11 @@
 import express, { Request, Response } from 'express';
 import ioserver, { Socket } from 'socket.io';
+import http from 'http';
 
 const PORT = 5000;
 
 const app = express();
-const server = require('http').Server(app);
+const server = new http.Server(app);
 
 const io = ioserver(server);
 
